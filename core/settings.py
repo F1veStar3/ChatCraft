@@ -139,21 +139,8 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-CACHES = {
-    'default': {
-        'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://localhost:6379/1',
-        'OPTIONS': {
-            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-        }
-    }
-}
-
 # AUTH_USER_MODEL = 'auth_app.CustomUser'
 
 GOOGLE_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID')
 GOOGLE_CLIENT_SECRET = os.getenv('GOOGLE_CLIENT_SECRET')
 GOOGLE_REDIRECT_URI = os.getenv('GOOGLE_REDIRECT_URI')
-GOOGLE_AUTH_URI = os.getenv('GOOGLE_AUTH_URI')
-GOOGLE_TOKEN_URI = os.getenv('GOOGLE_TOKEN_URI')
-GOOGLE_USERINFO_URI = os.getenv('GOOGLE_USERINFO_URI')
