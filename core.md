@@ -13,3 +13,18 @@
    - smtp/forgot_password 
    - chat ws (d)
    - AI (d)
+  
+```python3 -m venv .venv```
+
+```source .venv/bin/activate```
+
+```pip install -r requirements.txt```
+
+```docker-compose up -d```
+
+---
+- rework auth(django-allauth)
+- create pytest
+- create git Actions (env)
+- crete dev branch
+- create .env-exampels 
