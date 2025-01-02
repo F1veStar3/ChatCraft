@@ -22,9 +22,11 @@
 
 ```docker-compose up -d```
 
+```pip freeze > requirements.txt```
+
 ---
-- rework auth(django-allauth)
++ rework auth(django-allauth)
 - create pytest
 - create git Actions (env)
 - crete dev branch
-- create .env-exampels 
++ create .env-exampels 
