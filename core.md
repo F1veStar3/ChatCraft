@@ -26,7 +26,11 @@
 
 ---
 + rework auth(django-allauth)
++ crete dev branch
++ create .env-exampels
+
 - create pytest
 - create git Actions (env)
-- crete dev branch
-+ create .env-exampels 
+- fix google auth
+- add model Profile 
+
