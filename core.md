@@ -28,9 +28,11 @@
 + rework auth(django-allauth)
 + crete dev branch
 + create .env-exampels 
++ add google auth
++ add smtp
 
 - create pytest
 - create git Actions (env)
-- fix google auth
-- add smtp 
+
 - add celery
+- add model Profile
