@@ -27,6 +27,7 @@
 ---
 + rework auth(django-allauth)
 + crete dev branch
+
 + create .env-exampels 
 + add google auth
 + add smtp
