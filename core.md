@@ -8,9 +8,7 @@
    - tailwind
  
 3. App
-   + auth + google
-   - login/register/logout
-   - smtp/forgot_password 
+   + auth
    - chat ws (d)
    - AI (d)
   
@@ -25,15 +23,3 @@
 ```pip freeze > requirements.txt```
 
 ---
-+ rework auth(django-allauth)
-+ crete dev branch
-
-+ create .env-exampels 
-+ add google auth
-+ add smtp
-
-- create pytest
-- create git Actions (env)
-
-- add celery
-- add model Profile
