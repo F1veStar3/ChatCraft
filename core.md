@@ -1,17 +1,17 @@
 
 1. DevOps:
- - github (tests, env) + deploy on AWS/buket
- - sub domains  
+ - github (tests, env) + deploy AWS
+ - sub domains
 
 2. Frontend (d)
-   - React
-   - tailwind
+   - React/tailwind
  
 3. App
    + auth
-   - chat ws (d)
-   - AI (d)
-  
+   + chat ws /AI
+   - user profile + AWS s3
+ 
+
 ```python3 -m venv .venv```
 
 ```source .venv/bin/activate```
@@ -22,4 +22,12 @@
 
 ```pip freeze > requirements.txt```
 
----
+```npm install -g wscat```
+```wscat -c ws://localhost:8000/ws/chat/```
+
+```daphne core.asgi:application```
+
+{"user_message": "hello"}
+
+
+
