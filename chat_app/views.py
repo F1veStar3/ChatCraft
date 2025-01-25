@@ -1,8 +1,25 @@
-from django.shortcuts import render
+from rest_framework.generics import CreateAPIView, RetrieveAPIView, ListAPIView, DestroyAPIView
 
-from rest_framework.views import APIView
-from rest_framework.response import Response
+from .models import Chat
+from .serializers import ChatSerializer
 
-class HelloWorldView(APIView):
-    def get(self, request):
-        return Response({"message": "Hello World from chat!"})
+
+class ChatCreateView(CreateAPIView):
+    queryset = Chat.objects.all()
+    serializer_class = ChatSerializer
+
+
+class ChatRetrieveView(RetrieveAPIView):
+    queryset = Chat.objects.all()
+    serializer_class = ChatSerializer
+    lookup_field = 'pk'
+
+
+class ChatListView(ListAPIView):
+    queryset = Chat.objects.all()
+    serializer_class = ChatSerializer
+
+
+class ChatDestroyView(DestroyAPIView):
+    queryset = Chat.objects.all()
+    lookup_field = 'pk'

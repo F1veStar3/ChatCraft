@@ -1,19 +1,17 @@
 
 1. DevOps:
- - github (tests, env) + deploy on AWS/buket
- - sub domains  
+ - github (tests, env) + deploy AWS
+ - sub domains
 
 2. Frontend (d)
-   - React
-   - tailwind
+   - React/tailwind
  
 3. App
-   + auth + google
-   - login/register/logout
-   - smtp/forgot_password 
-   - chat ws (d)
-   - AI (d)
-  
+   + auth
+   + chat ws /AI
+   - user profile + AWS s3
+ 
+
 ```python3 -m venv .venv```
 
 ```source .venv/bin/activate```
@@ -24,16 +22,12 @@
 
 ```pip freeze > requirements.txt```
 
----
-+ rework auth(django-allauth)
-+ crete dev branch
+```npm install -g wscat```
+```wscat -c ws://localhost:8000/ws/chat/```
 
-+ create .env-exampels 
-+ add google auth
-+ add smtp
+```daphne core.asgi:application```
 
-- create pytest
-- create git Actions (env)
+{"user_message": "hello"}
 
-- add celery
-- add model Profile
+
+
