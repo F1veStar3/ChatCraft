@@ -8,7 +8,7 @@ from chat_app.models import Chat
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-    logo = models.ImageField(upload_to='profile_logos/', blank=True, null=True)
+    logo = models.ImageField(upload_to='media/uploads/', blank=True, null=True)
     chats = models.ForeignKey(Chat, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
