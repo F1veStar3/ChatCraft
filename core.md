@@ -7,7 +7,7 @@
    - React/tailwind
  
 3. App
-   - user profile + s3
+   - s3
    - add promts
  
 
