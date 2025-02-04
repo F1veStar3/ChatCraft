@@ -22,9 +22,9 @@ from drf_yasg import openapi
 
 schema_view = get_schema_view(
    openapi.Info(
-      title="API Documentation",
+      title="Your API",
       default_version='v1',
-      description="API description",
+      description="Your API description",
       terms_of_service="https://www.google.com/policies/terms/",
       contact=openapi.Contact(email="contact@yourproject.local"),
       license=openapi.License(name="BSD License"),
@@ -32,7 +32,6 @@ schema_view = get_schema_view(
    public=True,
    permission_classes=(permissions.AllowAny,),
 )
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('chat_app/', include('chat_app.urls')),
