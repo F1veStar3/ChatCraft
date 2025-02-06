@@ -1,9 +1,16 @@
 import requests
 from django.conf import settings
 from django.contrib.auth.models import User
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
+from rest_framework.generics import UpdateAPIView
+from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
+from .models import Profile
+from .serializers import UpdateProfileSerializer
 
 
 class GoogleLoginAPIView(APIView):
@@ -65,3 +72,24 @@ class GoogleCallbackAPIView(APIView):
                 "name": user.first_name,
             }
         }, status=status.HTTP_200_OK)
+
+
+class UpdateProfileLogoView(UpdateAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = UpdateProfileSerializer
+    parser_classes = (MultiPartParser, FormParser)
+    lookup_field = 'user'
+
+    @swagger_auto_schema(
+        manual_parameters=[
+            openapi.Parameter(
+                'logo',
+                openapi.IN_FORM,
+                description="file upload",
+                type=openapi.TYPE_FILE,
+                required=True
+            )
+        ]
+    )
+    def patch(self, request, *args, **kwargs):
+        return super().patch(request, *args, **kwargs)

@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 from dotenv import load_dotenv
 import os
+import boto3
+from storages.backends.s3boto3 import S3Boto3Storage
 
 load_dotenv()
 
@@ -52,6 +54,7 @@ INSTALLED_APPS = [
     'drf_yasg',
     'channels',
     'storages',
+    'django_filters',
     #apps
     'chat_app.apps.ChatAppConfig',
     'auth_app.apps.AuthAppConfig',
@@ -172,8 +175,11 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 
 REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
     ],
 }
 

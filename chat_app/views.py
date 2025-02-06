@@ -1,8 +1,6 @@
-from rest_framework.exceptions import PermissionDenied
-from rest_framework.filters import SearchFilter, OrderingFilter
-from rest_framework.generics import CreateAPIView, RetrieveAPIView
-from rest_framework.generics import DestroyAPIView
-from rest_framework.generics import ListAPIView
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
+from rest_framework.generics import CreateAPIView, RetrieveAPIView, ListAPIView, DestroyAPIView
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 
@@ -22,34 +20,26 @@ class ChatRetrieveView(RetrieveAPIView):
     lookup_field = 'pk'
     permission_classes = [IsAuthenticated]
 
-    def get_object(self):
-        instance = super().get_object()
-        if instance.user != self.request.user:
-            raise PermissionDenied("You are not allowed to view this chat room.")
-        return instance
+
+class CustomPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 100
 
 
 class ChatListView(ListAPIView):
+    queryset = Chat.objects.all()
     serializer_class = ChatSerializer
-    # permission_classes = [IsAuthenticated]
-    pagination_class = PageNumberPagination
-    filter_backends = [SearchFilter, OrderingFilter]
+    pagination_class = CustomPagination
+
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    filterset_fields = ['user']
     search_fields = ['name']
     ordering_fields = ['created_at']
-
-    def get_queryset(self):
-        return Chat.objects.filter(user=self.request.user)
+    ordering = ['-created_at']
 
 
 class ChatDestroyView(DestroyAPIView):
     queryset = Chat.objects.all()
     lookup_field = 'pk'
     permission_classes = [IsAuthenticated]
-
-    def perform_destroy(self, instance):
-        if instance.user != self.request.user:
-            raise PermissionDenied("You do not have permission to delete this chat.")
-        super().perform_destroy(instance)
-
-
-

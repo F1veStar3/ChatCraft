@@ -2,13 +2,14 @@
 1. DevOps:
  - github (tests, env) + deploy AWS ec2
  - sub domains
+ - google smtp
 
 2. Frontend 
    - React/tailwind
  
 3. App
-   - user profile + s3
-   - add promts
+   - write tests
+
  
 
 ```python3 -m venv .venv```
