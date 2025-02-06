@@ -8,8 +8,8 @@ from chat_app.models import Chat
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-    logo = models.ImageField(upload_to='media/uploads/', blank=True, null=True)
-    chats = models.ForeignKey(Chat, on_delete=models.SET_NULL, null=True, blank=True)
+    logo = models.ImageField(upload_to='chatcraft/logo/', blank=True, null=True)
+    chats = models.ForeignKey(Chat, on_delete=models.SET_NULL, null=True, blank=True) # TODO change to many-to-many
 
     def __str__(self):
         return self.user.username
