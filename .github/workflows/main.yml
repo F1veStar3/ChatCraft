@@ -1,0 +1,40 @@
+name: Deploy and Test
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+  pull_request:
+    branches:
+      - main
+      - dev
+
+jobs:
+  deploy-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.13'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Set GitHub secrets from .env
+      run: |
+        while IFS='=' read -r key value; do
+          echo "$key=$value" >> $GITHUB_ENV
+          gh secret set $key --body "$value"
+        done < .env
+
+    - name: Run tests
+      run: |
+        pytest --maxfail=1 --disable-warnings -q
