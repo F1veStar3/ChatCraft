@@ -87,3 +87,4 @@ jobs:
       - name: Stop Docker Compose
         run: |
           docker-compose -f docker-compose.yml down
+
