@@ -18,6 +18,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Install Docker Compose
+        run: |
+          sudo apt update
+          sudo apt install -y docker-compose
+
       - name: Create .env file
         run: |
           echo "DB_USER=${{ secrets.DB_USER }}" >> .env
