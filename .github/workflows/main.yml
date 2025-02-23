@@ -14,38 +14,28 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    services:
-      postgres:
-        image: postgres:13
-        env:
-          POSTGRES_USER: ${{ secrets.DB_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          POSTGRES_DB: ${{ secrets.DB_NAME }}
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd "pg_isready -U ${{ secrets.DB_USER }}"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
-      redis:
-        image: redis:6
-        ports:
-          - 6379:6379
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Docker Compose
+      - name: Create .env file
         run: |
-          docker-compose up -d
+          echo "DB_USER=${{ secrets.DB_USER }}" >> .env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+          echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
+
+      - name: Start services with Docker Compose
+        run: docker-compose up -d
+
+      - name: Wait for PostgreSQL to be ready
+        run: |
+          until docker-compose exec -T postgres pg_isready -U ${{ secrets.DB_USER }}; do
+            echo "Waiting for database..."
+            sleep 2
+          done
 
       - name: Run migrations
-        run: |
-          docker-compose exec -T web python manage.py migrate
+        run: docker-compose exec -T web python manage.py migrate
 
       - name: Run tests
-        run: |
-          docker-compose exec -T web pytest
+        run: docker-compose exec -T web pytest
