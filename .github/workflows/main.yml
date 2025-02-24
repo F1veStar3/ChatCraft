@@ -35,21 +35,26 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.13'
+          python-version: '3.11'
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Set up database configuration
+        run: |
+          echo "DATABASES = {\"default\": {\"ENGINE\": \"django.db.backends.postgresql\", \"NAME\": \"test_db\", \"USER\": \"postgres\", \"PASSWORD\": \"password\", \"HOST\": \"localhost\", \"PORT\": \"5432\"}}" > core/settings_test.py
+          echo "from .settings import *\nfrom .settings_test import *" > core/settings.py
+
       - name: Run migrations
         env:
-          DATABASE_URL: postgres://postgres:password@localhost:5432/test_db
+          DJANGO_SETTINGS_MODULE: core.settings
         run: |
           python manage.py migrate
 
       - name: Run tests
         env:
-          DATABASE_URL: postgres://postgres:password@localhost:5432/test_db
+          DJANGO_SETTINGS_MODULE: core.settings
         run: |
           python manage.py test
