@@ -16,21 +16,21 @@ jobs:
 
     services:
       postgres:
-        image: postgres:13
+        image: postgres:15
         env:
+          POSTGRES_DB: ${{ secrets.DB_NAME }}
           POSTGRES_USER: ${{ secrets.DB_USER }}
           POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          POSTGRES_DB: ${{ secrets.DB_NAME }}
         ports:
           - 5432:5432
         options: >-
-          --health-cmd "pg_isready -U ${{ secrets.DB_USER }}"
-          --health-interval 10s
+          --health-cmd "pg_isready -U ${{ secrets.DB_USER }} -d ${{ secrets.DB_NAME }}"
+          --health-interval 5s
           --health-timeout 5s
           --health-retries 5
 
       redis:
-        image: redis:6
+        image: redis:latest
         ports:
           - 6379:6379
 
@@ -38,32 +38,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.9"
-
-      - name: Install dependencies
+      - name: Set up Docker Compose
         run: |
-          python -m venv venv
-          source venv/bin/activate
-          pip install --upgrade pip
-          pip install -r requirements.txt
+          docker-compose up -d --build
 
-      - name: Run migrations
-        env:
-          DB_USER: ${{ secrets.DB_USER }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          DB_NAME: ${{ secrets.DB_NAME }}
+      - name: Run Migrations
         run: |
-          source venv/bin/activate
-          python manage.py migrate
+          docker-compose exec -T backend python manage.py migrate
 
-      - name: Run tests
-        env:
-          DB_USER: ${{ secrets.DB_USER }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          DB_NAME: ${{ secrets.DB_NAME }}
+      - name: Run Tests
         run: |
-          source venv/bin/activate
-          pytest
+          docker-compose exec -T backend pytest
