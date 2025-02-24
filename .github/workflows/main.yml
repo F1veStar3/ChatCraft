@@ -1,55 +1,41 @@
-name: Django CI
+name: Django CI with Docker
 
 on:
   push:
     branches:
-      - main
-      - dev
+      - main  # Змініть на вашу основну гілку
   pull_request:
     branches:
-      - main
-      - dev
+      - main  # Змініть на вашу основну гілку
 
 jobs:
   test:
     runs-on: ubuntu-latest
 
-    services:
-      postgres:
-        image: postgres:13
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: test_db
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
     steps:
     - uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.13'
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
 
-    - name: Install dependencies
+    - name: Build and run Docker containers
+      env:
+        DB_NAME: ${{ secrets.DB_NAME }}
+        DB_USER: ${{ secrets.DB_USER }}
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        DB_HOST: db
+        DB_PORT: 5432
       run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        docker-compose up -d
 
     - name: Run migrations
-      env:
-        DATABASE_URL: postgres://postgres:postgres@localhost:5432/test_db
       run: |
-        python manage.py migrate
+        docker-compose exec web python manage.py migrate
 
     - name: Run tests
-      env:
-        DATABASE_URL: postgres://postgres:postgres@localhost:5432/test_db
       run: |
-        python manage.py test
+        docker-compose exec web python manage.py test
+
+    - name: Stop Docker containers
+      run: |
+        docker-compose down
