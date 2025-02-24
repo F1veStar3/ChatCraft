@@ -45,7 +45,8 @@ jobs:
       - name: Set up database configuration
         run: |
           echo "DATABASES = {\"default\": {\"ENGINE\": \"django.db.backends.postgresql\", \"NAME\": \"test_db\", \"USER\": \"postgres\", \"PASSWORD\": \"password\", \"HOST\": \"localhost\", \"PORT\": \"5432\"}}" > core/settings_test.py
-          echo "from .settings import *\nfrom .settings_test import *" > core/settings.py
+          echo "from .settings import *" > core/settings.py
+          echo "from .settings_test import *" >> core/settings.py
 
       - name: Run migrations
         env:
