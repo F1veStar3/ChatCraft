@@ -3,10 +3,12 @@ name: Django CI with Docker
 on:
   push:
     branches:
-      - main  # Змініть на вашу основну гілку
+      - main
+      - dev
   pull_request:
     branches:
-      - main  # Змініть на вашу основну гілку
+      - main
+      - dev
 
 jobs:
   test:
