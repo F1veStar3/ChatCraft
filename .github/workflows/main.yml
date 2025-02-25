@@ -1,31 +1,38 @@
-name: Django CI with Docker
+name: Run Django Tests
 
 on:
   push:
     branches:
-      - main
-      - dev
+      - backend_API
   pull_request:
     branches:
-      - main
-      - dev
+      - backend_API
 
 jobs:
   test:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
+      - name: install Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.13'
 
-    - name: Build Docker image
-      run: docker-compose -f docker-compose.ci.yml build
+      - name: install requirements
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-    - name: Run tests
-      run: docker-compose -f docker-compose.ci.yml run web python manage.py test
+      - name: SECRET_KEY
+        run: echo "SECRET_KEY='test_secret_key'" >> $GITHUB_ENV
 
-    - name: Tear down Docker containers
-      run: docker-compose -f docker-compose.ci.yml down
+      - name: migrate
+        run: |
+          python manage.py makemigrations --check
+          python manage.py migrate --noinput
+
+      - name: test
+        run: python manage.py test --verbosity=2
