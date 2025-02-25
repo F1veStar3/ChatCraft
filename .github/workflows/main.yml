@@ -15,29 +15,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
 
-    - name: Build and run Docker containers
-      env:
-        DB_NAME: ${{ secrets.DB_NAME }}
-        DB_USER: ${{ secrets.DB_USER }}
-        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-        DB_HOST: db
-        DB_PORT: 5432
-      run: |
-        docker compose up -d
-
-    - name: Run migrations
-      run: |
-        docker-compose exec web python manage.py migrate
+    - name: Build Docker image
+      run: docker-compose -f docker-compose.ci.yml build
 
     - name: Run tests
-      run: |
-        docker-compose exec web python manage.py test
+      run: docker-compose -f docker-compose.ci.yml run web python manage.py test
 
-    - name: Stop Docker containers
-      run: |
-        docker-compose down
+    - name: Tear down Docker containers
+      run: docker-compose -f docker-compose.ci.yml down
