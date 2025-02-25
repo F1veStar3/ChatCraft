@@ -1,0 +1,29 @@
+name: Django Tests
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker
+        run: |
+          docker --version
+          docker compose version
+
+      - name: Build Docker images
+        run: docker compose -f docker-compose.yml build
+
+      - name: Run tests
+        run: docker compose -f docker-compose.yml run web python manage.py test
+
+      - name: Tear down Docker
+        run: docker compose -f docker-compose.yml down
