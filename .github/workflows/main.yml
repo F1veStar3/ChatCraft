@@ -28,7 +28,7 @@ jobs:
         DB_HOST: db
         DB_PORT: 5432
       run: |
-        docker-compose up -d
+        docker compose up -d
 
     - name: Run migrations
       run: |
