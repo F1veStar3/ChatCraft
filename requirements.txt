@@ -15,7 +15,7 @@ cryptography==44.0.0
 daphne==4.1.2
 distro==1.9.0
 dj-rest-auth==7.0.0
-Django==5.1.4
+Django==4.2.19
 django-allauth==65.3.1
 django-filter==24.3
 django-redis==5.4.0
