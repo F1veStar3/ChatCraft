@@ -10,6 +10,7 @@ certifi==2024.12.14
 cffi==1.17.1
 channels==4.2.0
 charset-normalizer==3.4.1
+click==8.1.8
 constantly==23.10.4
 cryptography==44.0.0
 daphne==4.1.2
@@ -64,4 +65,6 @@ txaio==23.1.1
 typing_extensions==4.12.2
 uritemplate==4.1.1
 urllib3==2.3.0
+uvicorn==0.34.0
+whitenoise==6.9.0
 zope.interface==7.2
