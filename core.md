@@ -6,9 +6,7 @@
 
 2. Frontend 
    - React/tailwind
- 
-3. App
-   - write tests (pytest-cov)
+
 
 
 
