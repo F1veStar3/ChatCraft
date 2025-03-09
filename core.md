@@ -1,8 +1,10 @@
 
 1. DevOps:
- - github (tests, env) + deploy AWS ec2
- - sub domains
  - google smtp
+ - auto deploy + auto env
+ - domain + ssl
+ - dev/main logic
+
 
 2. Frontend 
    - React/tailwind
@@ -21,8 +23,6 @@
 
 ```npm install -g wscat```
 ```wscat -c ws://localhost:8000/ws/chat/```
-
-
 
 {"user_message": "hello"}
 
