@@ -1,33 +1,20 @@
-version: '3'
+version: '3.13'
 
 services:
-  postgres:
-    image: postgres:latest
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile-dev
+    container_name: back-dev
+    restart: always
     environment:
-      POSTGRES_DB: ${DB_NAME}
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-
-  web:
-    build: .
-    command: >
-      sh -c "
-        python manage.py migrate && 
-        uvicorn core.asgi:application --host 0.0.0.0 --port 8000
-      "
-    volumes:
-      - .:/app
-    environment:
-      - DB_ENGINE=django.db.backends.postgresql
+      - SECRET_KEY=${SECRET_KEY}
+      - DEBUG=${DEBUG}
       - DB_NAME=${DB_NAME}
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
-      - DB_HOST=postgres
-      - DB_PORT=5432
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
       - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
       - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
       - GOOGLE_REDIRECT_URI=${GOOGLE_REDIRECT_URI}
@@ -42,6 +29,18 @@ services:
     depends_on:
       - postgres
     ports:
-      - "8000:8000"
+      - "8001:8000"
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres-dev
+    restart: always
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+
 volumes:
-  postgres_data:
+  postgres_dev_data:
