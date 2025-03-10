@@ -1,10 +1,9 @@
 version: '3.13'
 
 services:
-  backend:
+  backend-dev:
     build:
       context: .
-      dockerfile: Dockerfile-dev
     container_name: back-dev
     restart: always
     environment:
@@ -27,11 +26,11 @@ services:
       - AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME}
       - AWS_S3_REGION_NAME=${AWS_S3_REGION_NAME}
     depends_on:
-      - postgres
+      - postgres-dev
     ports:
       - "8001:8000"
 
-  postgres:
+  postgres-dev:
     image: postgres:latest
     container_name: postgres-dev
     restart: always
@@ -39,6 +38,8 @@ services:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "5433:5432"
     volumes:
       - postgres_dev_data:/var/lib/postgresql/data
 
