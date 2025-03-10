@@ -29,3 +29,55 @@ jobs:
 
       - name: Tear down Docker
         run: docker compose -f docker-compose.dev.yml down
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+
+      - name: Build Docker image
+        run: docker build -t chatcraft:latest .
+
+      - name: Save Docker image
+        run: docker save chatcraft:latest -o chatcraft.tar
+
+      - name: Copy image to server
+        run: scp -i ~/.ssh/id_rsa chatcraft.tar ${{ secrets.IP_UBUNTU }}:/home/ubuntu/
+
+  deploy:
+    needs: build
+    runs-on: self-hosted
+    steps:
+      - name: Load Docker image
+        run: docker load -i /home/ubuntu/chatcraft.tar
+
+      - name: Create environment file
+        run: |
+          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
+          echo "DEBUG=${{ secrets.DEBUG }}" >> .env
+          echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
+          echo "DB_USER=${{ secrets.DB_USER }}" >> .env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+          echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
+          echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
+          echo "IP_UBUNTU=${{ secrets.IP_UBUNTU }}" >> .env
+          echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> .env
+          echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> .env
+          echo "GOOGLE_REDIRECT_URI=${{ secrets.GOOGLE_REDIRECT_URI }}" >> .env
+          echo "EMAIL_HOST_USER=${{ secrets.EMAIL_HOST_USER }}" >> .env
+          echo "EMAIL_HOST_PASSWORD=${{ secrets.EMAIL_HOST_PASSWORD }}" >> .env
+          echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> .env
+          echo "OPENAI_BASE_URL=${{ secrets.OPENAI_BASE_URL }}" >> .env
+          echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> .env
+          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> .env
+          echo "AWS_STORAGE_BUCKET_NAME=${{ secrets.AWS_STORAGE_BUCKET_NAME }}" >> .env
+          echo "AWS_S3_REGION_NAME=${{ secrets.AWS_S3_REGION_NAME }}" >> .env
+
+      - name: Set .env file
+        run: cp .env /home/ubuntu/docker_data/dev
+
+      - name: Run Docker container
+        run: sudo docker compose -f /home/ubuntu/docker_data/dev/docker-compose-dev.yml up -d
+
+
