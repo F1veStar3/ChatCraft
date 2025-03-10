@@ -22,7 +22,7 @@ jobs:
           docker compose version
 
       - name: Build Docker images
-        run: docker compose -f docker-compose.dev.yml --build
+        run: docker compose -f docker-compose.dev.yml build
 
       - name: Run tests
         run: docker compose -f docker-compose.dev.yml run web python manage.py test
