@@ -10,4 +10,4 @@ COPY . .
 
 RUN python manage.py collectstatic --noinput
 
-CMD ["uvicorn", "core.asgi:application", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["sh", "-c", "python manage.py migrate && uvicorn core.asgi:application --host 0.0.0.0 --port 8000"]
