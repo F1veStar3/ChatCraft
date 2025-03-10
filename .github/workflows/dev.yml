@@ -25,7 +25,7 @@ jobs:
         run: docker compose -f docker-compose.dev.yml build
 
       - name: Run tests
-        run: docker compose -f docker-compose.dev.yml run web python manage.py test
+        run: docker compose -f docker-compose.dev.yml run backend-dev python manage.py test
 
       - name: Tear down Docker
         run: docker compose -f docker-compose.dev.yml down
