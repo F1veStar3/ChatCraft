@@ -22,10 +22,10 @@ jobs:
           docker compose version
 
       - name: Build Docker images
-        run: docker compose -f docker-compose.prod.yml --build
+        run: docker compose -f docker-compose.prod.yml build
 
       - name: Run tests
-        run: docker compose -f docker-compose.prod.yml run web python manage.py test
+        run: docker compose -f docker-compose.prod.yml run backend-prod python manage.py test
 
       - name: Tear down Docker
         run: docker compose -f docker-compose.prod.yml down
