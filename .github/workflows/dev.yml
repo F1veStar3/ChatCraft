@@ -30,27 +30,32 @@ jobs:
       - name: Tear down Docker
         run: docker compose -f docker-compose.dev.yml down
 
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout source
-        uses: actions/checkout@v3
-
-      - name: Build Docker image
-        run: docker build -t chatcraft:latest .
-
-      - name: Save Docker image
-        run: docker save chatcraft:latest -o chatcraft.tar
-
-      - name: Copy image to server
-        run: scp -i ~/.ssh/id_rsa chatcraft.tar ${{ secrets.IP_UBUNTU }}:/home/ubuntu/
+build:
+  runs-on: [ ubuntu-latest ]
+  defaults:
+    run:
+      working-directory: './ChatCraft'
+  steps:
+    - name: Checkout source
+      uses: actions/checkout@v3
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+    - name: Build Docker image
+      run: docker build -t myapp:latest .
+    - name: Save Docker image as tar archive
+      run: docker save myapp:latest -o myapp.tar
+    - name: Upload Docker image as artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: myapp-image
+        path: myapp.tar
 
   deploy:
     needs: build
     runs-on: self-hosted
     steps:
       - name: Load Docker image
-        run: docker load -i /home/ubuntu/chatcraft.tar
+        run: docker load -i /home/ubuntu/myapp.tar
 
       - name: Create environment file
         run: |
@@ -78,6 +83,6 @@ jobs:
         run: cp .env /home/ubuntu/docker_data/dev
 
       - name: Run Docker container
-        run: sudo docker compose -f /home/ubuntu/docker_data/dev/docker-compose-dev.yml up -d
+        run: sudo docker compose -f /home/ubuntu/docker_data/dev/docker-compose.dev.yml up -d
 
 
