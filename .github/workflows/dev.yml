@@ -30,35 +30,29 @@ jobs:
       - name: Tear down Docker
         run: docker compose -f docker-compose.dev.yml down
 
-#  build:
-#    runs-on: [ ubuntu-latest ]
-#    defaults:
-#      run:
-#        working-directory: './ChatCraft'
-#    steps:
-#      - name: Checkout source
-#        uses: actions/checkout@v3
-#      - name: Set up Docker Buildx
-#        uses: docker/setup-buildx-action@v2
-#      - name: Build Docker image
-#        run: docker build -t myapp:latest .
-#      - name: Save Docker image as tar archive
-#        run: docker save myapp:latest -o myapp.tar
-#      - name: Upload Docker image as artifact
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: myapp-image
-#          path: myapp.tar
 
   deploy:
-    runs-on: self-hosted
-    steps:
-      - name: Build Docker images
-        run: docker-compose -f docker-compose.dev.yml build
+    runs-on: ubuntu-latest
 
-      - name: Create environment file
-        run: |
-          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: SSH into EC2 and Deploy
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.IP_UBUNTU }}
+        username: ubuntu
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+        script: |
+          cd /path/to/your/project
+
+          # Оновлення коду з репозиторію
+          git pull origin dev
+
+          docker exec -i <container_name> /bin/bash << 'EOF'
+          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" > .env
           echo "DEBUG=${{ secrets.DEBUG }}" >> .env
           echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
           echo "DB_USER=${{ secrets.DB_USER }}" >> .env
@@ -77,11 +71,7 @@ jobs:
           echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> .env
           echo "AWS_STORAGE_BUCKET_NAME=${{ secrets.AWS_STORAGE_BUCKET_NAME }}" >> .env
           echo "AWS_S3_REGION_NAME=${{ secrets.AWS_S3_REGION_NAME }}" >> .env
+          EOF
 
-      - name: Set .env file
-        run: cp .env /home/ubuntu/docker_data/dev
-
-      - name: Run Docker container
-        run: sudo docker compose -f /home/ubuntu/docker_data/dev/docker-compose.dev.yml up -d
-
-
+          docker-compose down
+          docker-compose up -d
