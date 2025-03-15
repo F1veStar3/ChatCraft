@@ -30,25 +30,25 @@ jobs:
       - name: Tear down Docker
         run: docker compose -f docker-compose.dev.yml down
 
-build:
-  runs-on: [ ubuntu-latest ]
-  defaults:
-    run:
-      working-directory: './ChatCraft'
-  steps:
-    - name: Checkout source
-      uses: actions/checkout@v3
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
-    - name: Build Docker image
-      run: docker build -t myapp:latest .
-    - name: Save Docker image as tar archive
-      run: docker save myapp:latest -o myapp.tar
-    - name: Upload Docker image as artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: myapp-image
-        path: myapp.tar
+  build:
+    runs-on: [ ubuntu-latest ]
+    defaults:
+      run:
+        working-directory: './ChatCraft'
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Build Docker image
+        run: docker build -t myapp:latest .
+      - name: Save Docker image as tar archive
+        run: docker save myapp:latest -o myapp.tar
+      - name: Upload Docker image as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: myapp-image
+          path: myapp.tar
 
   deploy:
     needs: build
