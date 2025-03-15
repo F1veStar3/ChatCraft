@@ -54,7 +54,7 @@ jobs:
     runs-on: self-hosted
     steps:
       - name: Build Docker images
-        run: docker compose -f docker-compose.dev.yml build
+        run: docker-compose -f docker-compose.dev.yml build
 
       - name: Create environment file
         run: |
