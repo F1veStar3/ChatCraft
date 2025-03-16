@@ -1,10 +1,8 @@
 
 1. DevOps:
  - google smtp
- - auto deploy + auto env
- - domain + ssl
- - dev/main logic
-
+ - domain + ssl 
+ - env
 
 2. Frontend 
    - React/tailwind
