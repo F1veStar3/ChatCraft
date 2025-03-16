@@ -61,7 +61,7 @@ jobs:
         echo "AWS_S3_REGION_NAME=${{ secrets.AWS_S3_REGION_NAME }}" >> .env
 
     - name: Set .env file
-      run: cp .env /home/ubuntu/ChatCraft/docker_data/dev
+      run: cp .env /home/ubuntu/docker_data/dev
 
     - name: Restart Docker container
       run: |
