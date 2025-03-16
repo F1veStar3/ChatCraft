@@ -41,13 +41,12 @@ jobs:
     - name: Create .env file
       run: |
         echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
-        echo "DEBUG=${{ secrets.DEBUG }}" >> .env
-        echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
-        echo "DB_USER=${{ secrets.DB_USER }}" >> .env
-        echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
-        echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
-        echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
-        echo "IP_UBUNTU=${{ secrets.IP_UBUNTU }}" >> .env
+        echo "DEBUG=${{ secrets.DEV_DEBUG }}" >> .env
+        echo "DB_NAME=${{ secrets.DEV_DB_NAME }}" >> .env
+        echo "DB_USER=${{ secrets.DEV_DB_USER }}" >> .env
+        echo "DB_PASSWORD=${{ secrets.DEV_DB_PASSWORD }}" >> .env
+        echo "DB_HOST=${{ secrets.DEV_DB_HOST }}" >> .env
+        echo "DB_PORT=${{ secrets.DEV_DB_PORT }}" >> .env
         echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> .env
         echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> .env
         echo "GOOGLE_REDIRECT_URI=${{ secrets.GOOGLE_REDIRECT_URI }}" >> .env
