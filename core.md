@@ -7,7 +7,6 @@
 2. Frontend 
    - React/tailwind
 
-   
 ```python3 -m venv .venv```
 ```source .venv/bin/activate```
 
