@@ -1,75 +1,76 @@
-name: CICD
-
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-
-jobs:
-#  test:
-#    runs-on: ubuntu-latest
+#name: CICD
+#
+#on:
+#  push:
+#    branches:
+#      - main
+#  pull_request:
+#    branches:
+#      - main
+#
+#jobs:
+##  test:
+##    runs-on: ubuntu-latest
+##
+##    steps:
+##      - name: Checkout code
+##        uses: actions/checkout@v3
+##
+##      - name: Set up Docker
+##        run: |
+##          docker --version
+##          docker compose version
+##
+##      - name: Build Docker images
+##        run: docker compose -f docker-compose.dev.yml build
+##
+##      - name: Run tests
+##        run: docker compose -f docker-compose.dev.yml run backend-dev python manage.py test
+##
+##      - name: Tear down Docker
+##        run: docker compose -f docker-compose.dev.yml down
+#
+#  deploy:
+##    needs: test
+#    runs-on: self-hosted
 #
 #    steps:
-#      - name: Checkout code
-#        uses: actions/checkout@v3
+#    - name: Checkout code
+#      uses: actions/checkout@v2
 #
-#      - name: Set up Docker
-#        run: |
-#          docker --version
-#          docker compose version
+#    - name: Create .env file
+#      run: |
+#        echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
+#        echo "DEBUG=${{ secrets.DEBUG }}" >> .env
+#        echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
+#        echo "DB_USER=${{ secrets.DB_USER }}" >> .env
+#        echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+#        echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
+#        echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
+#        echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> .env
+#        echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> .env
+#        echo "GOOGLE_REDIRECT_URI=${{ secrets.GOOGLE_REDIRECT_URI }}" >> .env
+#        echo "EMAIL_HOST_USER=${{ secrets.EMAIL_HOST_USER }}" >> .env
+#        echo "EMAIL_HOST_PASSWORD=${{ secrets.EMAIL_HOST_PASSWORD }}" >> .env
+#        echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> .env
+#        echo "OPENAI_BASE_URL=${{ secrets.OPENAI_BASE_URL }}" >> .env
+#        echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> .env
+#        echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> .env
+#        echo "AWS_STORAGE_BUCKET_NAME=${{ secrets.AWS_STORAGE_BUCKET_NAME }}" >> .env
+#        echo "AWS_S3_REGION_NAME=${{ secrets.AWS_S3_REGION_NAME }}" >> .env
 #
-#      - name: Build Docker images
-#        run: docker compose -f docker-compose.dev.yml build
+#    - name: Set .env file
+#      run: cp .env /home/ubuntu/docker_data/main
 #
-#      - name: Run tests
-#        run: docker compose -f docker-compose.dev.yml run backend-dev python manage.py test
+#    - name: Pull latest changes from GitHub
+#      run: |
+#        cd /home/ubuntu/ChatCraft
+#        git checkout dev
+#        git pull origin main
 #
-#      - name: Tear down Docker
-#        run: docker compose -f docker-compose.dev.yml down
-
-  deploy:
-#    needs: test
-    runs-on: self-hosted
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Create .env file
-      run: |
-        echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
-        echo "DEBUG=${{ secrets.DEBUG }}" >> .env
-        echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
-        echo "DB_USER=${{ secrets.DB_USER }}" >> .env
-        echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
-        echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
-        echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
-        echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> .env
-        echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> .env
-        echo "GOOGLE_REDIRECT_URI=${{ secrets.GOOGLE_REDIRECT_URI }}" >> .env
-        echo "EMAIL_HOST_USER=${{ secrets.EMAIL_HOST_USER }}" >> .env
-        echo "EMAIL_HOST_PASSWORD=${{ secrets.EMAIL_HOST_PASSWORD }}" >> .env
-        echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> .env
-        echo "OPENAI_BASE_URL=${{ secrets.OPENAI_BASE_URL }}" >> .env
-        echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> .env
-        echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> .env
-        echo "AWS_STORAGE_BUCKET_NAME=${{ secrets.AWS_STORAGE_BUCKET_NAME }}" >> .env
-        echo "AWS_S3_REGION_NAME=${{ secrets.AWS_S3_REGION_NAME }}" >> .env
-
-    - name: Set .env file
-      run: cp .env /home/ubuntu/docker_data/main
-
-    - name: Pull latest changes from GitHub
-      run: |
-        cd /home/ubuntu/ChatCraft
-        git pull origin main
-
-    - name: Restart Docker container
-      run: |
-        docker-compose -f docker-compose.main.yml down
-        docker-compose -f docker-compose.main.yml up -d
-
-
+#    - name: Restart Docker container
+#      run: |
+#        docker-compose -f docker-compose.main.yml down
+#        docker-compose -f docker-compose.main.yml up -d
+#
+#
