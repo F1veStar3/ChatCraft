@@ -62,12 +62,6 @@ jobs:
     - name: Set .env file
       run: cp .env /home/ubuntu/docker_data/main
 
-    - name: Pull latest changes from GitHub
-      run: |
-        cd /home/ubuntu/ChatCraft
-        git checkout dev
-        git pull origin main
-
     - name: Restart Docker container
       run: |
         docker-compose -f docker-compose.main.yml down
