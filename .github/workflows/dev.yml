@@ -38,7 +38,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Pul latest code from repository
+    - name: Pull latest code from repository
       run: |
         cd /home/ubuntu/ChatCraft
         git checkout dev
@@ -71,6 +71,5 @@ jobs:
 
     - name: Restart Docker container
       run: |
-        docker-compose -f docker-compose.dev.yml down --remove-orphans
-        docker-compose --env-file /home/ubuntu/docker_data/dev/.env  -f docker-compose.dev.yml up --build -d
+        docker-compose --env-file /home/ubuntu/docker_data/dev/.env  -f docker-compose.dev.yml restart -d
 

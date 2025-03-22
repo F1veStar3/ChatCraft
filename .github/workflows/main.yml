@@ -71,7 +71,6 @@ jobs:
 
     - name: Restart Docker container
       run: |
-        docker-compose -f docker-compose.main.yml down --remove-orphans
-        docker-compose --env-file /home/ubuntu/docker_data/main/.env -f docker-compose.main.yml up --build -d
+        docker-compose --env-file /home/ubuntu/docker_data/main/.env -f docker-compose.main.yml restart -d
 
 
