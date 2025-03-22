@@ -40,7 +40,7 @@ jobs:
 
     - name: Pull latest code from repository
       run: |
-        cd /home/ubuntu/home/ubuntu/ChatCraft
+        cd /home/ubuntu/ChatCraft
         git checkout dev
         git fetch origin dev
         git reset --hard origin/dev
