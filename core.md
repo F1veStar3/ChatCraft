@@ -1,8 +1,15 @@
 
 1. DevOps:
  - google smtp
- - domain + ssl 
- - env
+ - domain + ssl
+
+ - add async
+ - add JWT swagger login 
+ - fix tests
+ 
+ - test env/checkout/pull
+ - auto run.sh
+
 
 2. Frontend 
    - React/tailwind
