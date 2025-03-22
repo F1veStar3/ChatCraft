@@ -8,7 +8,6 @@
  - fix tests
  
  - test env/checkout/pull
- - auto run.sh
 
 
 2. Frontend 
