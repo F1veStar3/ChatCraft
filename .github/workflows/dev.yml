@@ -38,6 +38,13 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
+    - name: Pull latest code from repository
+      run: |
+        cd /home/ubuntu/home/ubuntu/ChatCraft
+        git checkout dev
+        git fetch origin dev
+        git reset --hard origin/dev
+
     - name: Create .env file
       run: |
         echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
@@ -65,4 +72,5 @@ jobs:
     - name: Restart Docker container
       run: |
         docker-compose -f docker-compose.dev.yml down
-        docker-compose -f docker-compose.dev.yml up -d
+        docker-compose --env-file /home/ubuntu/docker_data/dev/.env  -f docker-compose.dev.yml up --build -d
+
