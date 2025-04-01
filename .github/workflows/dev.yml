@@ -13,7 +13,7 @@ jobs:
     runs-on: [ ubuntu-latest ]
     defaults:
       run:
-        working-directory: './ChatCraft'
+        working-directory: .
     steps:
       - name: Checkout source
         uses: actions/checkout@v3
