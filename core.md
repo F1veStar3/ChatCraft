@@ -2,12 +2,11 @@
 1. DevOps:
  - google smtp
  - domain + ssl
+ - ALLOWED_HOSTS
 
  - add async
  - add JWT swagger login 
  - fix tests
- 
- - test env/checkout/pull
 
 
 2. Frontend 
