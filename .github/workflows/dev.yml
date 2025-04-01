@@ -24,6 +24,7 @@ jobs:
       - name: Push Docker Image
         run: docker push f1vestar3/chatcraft:latest
 
+
 #  deploy:
 #    runs-on: self-hosted
 
