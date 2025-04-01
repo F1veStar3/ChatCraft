@@ -24,6 +24,41 @@ jobs:
       - name: Push Docker Image
         run: docker push f1vestar3/chatcraft:latest
 
+  deploy:
+    needs: build
+    runs-on: self-hosted
+
+    steps:
+      - name: Pull image from Docker Hub
+        run: sudo docker pull f1vestar3/chatcraft:latest
+
+      - name: Create .env file
+        run: |
+          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
+          echo "DEBUG=${{ secrets.DEV_DEBUG }}" >> .env
+          echo "DB_NAME=${{ secrets.DEV_DB_NAME }}" >> .env
+          echo "DB_USER=${{ secrets.DEV_DB_USER }}" >> .env
+          echo "DB_PASSWORD=${{ secrets.DEV_DB_PASSWORD }}" >> .env
+          echo "DB_HOST=${{ secrets.DEV_DB_HOST }}" >> .env
+          echo "DB_PORT=${{ secrets.DEV_DB_PORT }}" >> .env
+          echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> .env
+          echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> .env
+          echo "GOOGLE_REDIRECT_URI=${{ secrets.GOOGLE_REDIRECT_URI }}" >> .env
+          echo "EMAIL_HOST_USER=${{ secrets.EMAIL_HOST_USER }}" >> .env
+          echo "EMAIL_HOST_PASSWORD=${{ secrets.EMAIL_HOST_PASSWORD }}" >> .env
+          echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> .env
+          echo "OPENAI_BASE_URL=${{ secrets.OPENAI_BASE_URL }}" >> .env
+          echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> .env
+          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> .env
+          echo "AWS_STORAGE_BUCKET_NAME=${{ secrets.AWS_STORAGE_BUCKET_NAME }}" >> .env
+          echo "AWS_S3_REGION_NAME=${{ secrets.AWS_S3_REGION_NAME }}" >> .env
+          echo "AWS_S3_REGION_NAME=${{ secrets.DOCKER_USERNAME }}" >> .env
+          echo "AWS_S3_REGION_NAME=${{ secrets.DOCKER_PASSWORD }}" >> .env
+
+      - name: Run docker container
+        run: sudo docker run -d -p 8000:8000 --env-file .env --name chatcraft-container f1vestar3/chatcraft:latest
+
+
 #  deploy:
 #    runs-on: self-hosted
 
@@ -48,46 +83,4 @@ jobs:
 #      - name: Tear down Docker
 #        run: docker compose -f docker-compose.dev.yml down
 #
-#  deploy:
-##    needs: test
-#    runs-on: self-hosted
-#
-#    steps:
-#    - name: Checkout code
-#      uses: actions/checkout@v2
-#
-#    - name: Pull latest code from repository
-#      run: |
-#        cd /home/ubuntu/ChatCraft
-#        git checkout dev
-#        git fetch origin dev
-#        git reset --hard origin/dev
-#
-#    - name: Create .env file
-#      run: |
-#        echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
-#        echo "DEBUG=${{ secrets.DEV_DEBUG }}" >> .env
-#        echo "DB_NAME=${{ secrets.DEV_DB_NAME }}" >> .env
-#        echo "DB_USER=${{ secrets.DEV_DB_USER }}" >> .env
-#        echo "DB_PASSWORD=${{ secrets.DEV_DB_PASSWORD }}" >> .env
-#        echo "DB_HOST=${{ secrets.DEV_DB_HOST }}" >> .env
-#        echo "DB_PORT=${{ secrets.DEV_DB_PORT }}" >> .env
-#        echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> .env
-#        echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> .env
-#        echo "GOOGLE_REDIRECT_URI=${{ secrets.GOOGLE_REDIRECT_URI }}" >> .env
-#        echo "EMAIL_HOST_USER=${{ secrets.EMAIL_HOST_USER }}" >> .env
-#        echo "EMAIL_HOST_PASSWORD=${{ secrets.EMAIL_HOST_PASSWORD }}" >> .env
-#        echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> .env
-#        echo "OPENAI_BASE_URL=${{ secrets.OPENAI_BASE_URL }}" >> .env
-#        echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> .env
-#        echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> .env
-#        echo "AWS_STORAGE_BUCKET_NAME=${{ secrets.AWS_STORAGE_BUCKET_NAME }}" >> .env
-#        echo "AWS_S3_REGION_NAME=${{ secrets.AWS_S3_REGION_NAME }}" >> .env
-#
-#    - name: Set .env file
-#      run: cp .env /home/ubuntu/docker_data/dev
-#
-#    - name: Restart Docker container
-#      run: |
-#        docker-compose --env-file /home/ubuntu/docker_data/dev/.env  -f docker-compose.dev.yml restart
 
