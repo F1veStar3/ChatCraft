@@ -30,7 +30,7 @@ jobs:
 
     steps:
       - name: Pull image from Docker Hub
-        run: sudo docker pull f1vestar3/chatcraft:latest
+        run: sudo docker pull f1vestar3/chatcraft-dev:latest
 
       - name: Create .env file
         run: |
