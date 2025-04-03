@@ -30,7 +30,6 @@ jobs:
     steps:
       - name: Pull image from Docker Hub
         run: sudo docker pull f1vestar3/chatcraft-dev:latest
-
       - name: Create .env file
         run: |
           echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
@@ -53,6 +52,5 @@ jobs:
           echo "AWS_S3_REGION_NAME=${{ secrets.AWS_S3_REGION_NAME }}" >> .env
           echo "AWS_S3_REGION_NAME=${{ secrets.DOCKER_USERNAME }}" >> .env
           echo "AWS_S3_REGION_NAME=${{ secrets.DOCKER_PASSWORD }}" >> .env
-
       - name: Run docker container
-        run: sudo docker run -d --network dev -p 8001:8000 --env-file .env --name chatcraft-dev f1vestar3/chatcraft-dev:latest
+        run: sudo docker restart -d --network dev -p 8001:8000 --env-file .env --name chatcraft-dev f1vestar3/chatcraft-dev:latest
