@@ -56,7 +56,7 @@ jobs:
           echo "AWS_S3_REGION_NAME=${{ secrets.DOCKER_PASSWORD }}" >> .env
 
       - name: Run docker container
-        run: sudo docker run -d --network dev -p 8001:8000 --env-file .env --name chatcraft-container f1vestar3/chatcraft-dev:latest
+        run: sudo docker run -d --network dev -p 8001:8000 --env-file .env --name chatcraft-dev f1vestar3/chatcraft-dev:latest
 
 
 #  deploy:
