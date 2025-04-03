@@ -27,7 +27,6 @@ jobs:
   deploy:
     needs: build
     runs-on: self-hosted
-
     steps:
       - name: Pull image from Docker Hub
         run: sudo docker pull f1vestar3/chatcraft-dev:latest
@@ -57,30 +56,3 @@ jobs:
 
       - name: Run docker container
         run: sudo docker run -d --network dev -p 8001:8000 --env-file .env --name chatcraft-dev f1vestar3/chatcraft-dev:latest
-
-
-#  deploy:
-#    runs-on: self-hosted
-
-#  test:
-#    runs-on: ubuntu-latest
-#
-#    steps:
-#      - name: Checkout code
-#        uses: actions/checkout@v3
-#
-#      - name: Set up Docker
-#        run: |
-#          docker --version
-#          docker compose version
-#
-#      - name: Build Docker images
-#        run: docker compose -f docker-compose.dev.yml build
-#
-#      - name: Run tests
-#        run: docker compose -f docker-compose.dev.yml run backend-dev python manage.py test
-#
-#      - name: Tear down Docker
-#        run: docker compose -f docker-compose.dev.yml down
-#
-
