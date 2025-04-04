@@ -17,10 +17,13 @@ jobs:
     steps:
       - name: Checkout source
         uses: actions/checkout@v3
+
       - name: Login to docker hub
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
       - name: Build Docker Image
         run: docker build -t f1vestar3/chatcraft-dev:latest .
+
       - name: Push Docker Image
         run: docker push f1vestar3/chatcraft-dev:latest
 
@@ -30,6 +33,7 @@ jobs:
     steps:
       - name: Pull image from Docker Hub
         run: sudo docker pull f1vestar3/chatcraft-dev:latest
+
       - name: Create .env file
         run: |
           echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
@@ -52,5 +56,12 @@ jobs:
           echo "AWS_S3_REGION_NAME=${{ secrets.AWS_S3_REGION_NAME }}" >> .env
           echo "AWS_S3_REGION_NAME=${{ secrets.DOCKER_USERNAME }}" >> .env
           echo "AWS_S3_REGION_NAME=${{ secrets.DOCKER_PASSWORD }}" >> .env
+
+      - name: Stop docker container
+        run: sudo docker stop chatcraft-dev
+
+      - name: Delete docker container
+        run: sudo docker rm chatcraft-dev
+
       - name: Run docker container
-        run: sudo docker restart -d --network dev -p 8001:8000 --env-file .env --name chatcraft-dev f1vestar3/chatcraft-dev:latest
+        run: sudo docker restart --network dev -p 8001:8000 --env-file .env --name chatcraft-dev f1vestar3/chatcraft-dev:latest
