@@ -60,11 +60,11 @@ jobs:
       - name: Clear docker
         run: sudo docker system prune -f
 
-#      - name: Stop docker container
-#        run: sudo docker stop chatcraft-dev
-#
-#      - name: Delete docker container
-#        run: sudo docker rm chatcraft-dev
+      - name: Stop docker container
+        run: sudo docker stop chatcraft-dev
+
+      - name: Delete docker container
+        run: sudo docker rm chatcraft-dev
 
       - name: Run docker container
         run: sudo docker run -d --network dev -p 8001:8000 --env-file .env --name chatcraft-dev f1vestar3/chatcraft-dev:latest
