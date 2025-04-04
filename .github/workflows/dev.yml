@@ -67,4 +67,4 @@ jobs:
 #        run: sudo docker rm chatcraft-dev
 
       - name: Run docker container
-        run: sudo docker restart --network dev -p 8001:8000 --env-file .env --name chatcraft-dev f1vestar3/chatcraft-dev:latest
+        run: sudo docker run --network dev -p 8001:8000 --env-file .env --name chatcraft-dev f1vestar3/chatcraft-dev:latest
