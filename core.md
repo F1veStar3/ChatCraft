@@ -14,6 +14,7 @@
 ```npm install -g wscat```
 ```wscat -c ws://localhost:8000/ws/chat/```
 
+
 {"user_message": "hello"}
 
 
