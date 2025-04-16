@@ -1,10 +1,10 @@
 version: '3.13'
 
 services:
-  backend-prod:
+  backend:
     build:
       context: .
-    container_name: back-prod
+    container_name: back
     restart: always
     environment:
       - SECRET_KEY=${SECRET_KEY}
@@ -26,13 +26,13 @@ services:
       - AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME}
       - AWS_S3_REGION_NAME=${AWS_S3_REGION_NAME}
     depends_on:
-      - postgres-prod
+      - postgres
     ports:
       - "8000:8000"
 
-  postgres-prod:
+  postgres:
     image: postgres:latest
-    container_name: postgres-prod
+    container_name: postgres
     restart: always
     environment:
       POSTGRES_DB: ${DB_NAME}
@@ -41,7 +41,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_prod_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
 
 volumes:
-  postgres_prod_data:
+  postgres_data:

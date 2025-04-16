@@ -57,9 +57,6 @@ jobs:
           echo "AWS_S3_REGION_NAME=${{ secrets.DOCKER_USERNAME }}" >> .env
           echo "AWS_S3_REGION_NAME=${{ secrets.DOCKER_PASSWORD }}" >> .env
 
-      - name: Clear docker
-        run: sudo docker system prune -f
-
       - name: Stop docker container
         run: sudo docker stop chatcraft-dev
 

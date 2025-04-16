@@ -1,31 +1,22 @@
 
 1. DevOps:
- - google smtp
- - domain + ssl
  - ALLOWED_HOSTS
+ - ssl 
 
  - add async
- - add JWT swagger login 
+ - Rework Auth (JWT)
+   - google smtp
  - fix tests
- - 
-
-
-2. Frontend 
-   - React/tailwind
-
-```python3 -m venv .venv```
-```source .venv/bin/activate```
-
-```pip install -r requirements.txt```
-```pip freeze > requirements.txt```
-
-```docker-compose build```
-```docker-compose up -d```
+ - test chat 
+ - Prompt Engineering
+ - LangChain
 
 ```npm install -g wscat```
 ```wscat -c ws://localhost:8000/ws/chat/```
 
+
 {"user_message": "hello"}
+
 
 
 
